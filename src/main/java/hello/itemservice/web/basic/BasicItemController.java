@@ -95,7 +95,6 @@ public class BasicItemController {
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
-        itemRepository.save(item);
 
         return "redirect:/basic/items/{itemId}"; //위의 getId()가 {itemId}에 들어가게 됨 , 남은 status는 쿼리파라미터 형식으로 추가됨 ?status=true
     }
@@ -113,13 +112,13 @@ public class BasicItemController {
         return "redirect:/basic/items/{itemId}";
     }
 
-
+/*
     @PostConstruct
     public void init() {
 
         itemRepository.save(new Item("itemA", 10000, 10));
         itemRepository.save(new Item("itemB", 20000, 20));
 
-    }
+    }*/
 
 }
