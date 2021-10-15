@@ -3,6 +3,8 @@ package hello.itemservice.domain.item;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data // 평소에 쓸 때는 조심해서 사용하자
 public class Item {
 
@@ -10,6 +12,12 @@ public class Item {
     private String itemName;
     private Integer price;
     private Integer quantity;
+
+    private Boolean open; //판매여부
+    private List<String> regions; //등록 지역
+    private ItemType itemType; //상품종류
+    private String deliveryCode; //배송지역
+
 
     public Item() {
     }
