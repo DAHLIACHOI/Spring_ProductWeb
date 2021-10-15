@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -20,6 +22,16 @@ import java.util.List;
 public class BasicItemController {
 
     private final ItemRepository itemRepository;
+
+    @ModelAttribute("regions")
+    public Map<String, String> regions(){
+        Map<String, String> regions = new LinkedHashMap<>();
+        regions.put("SEOUL","서울");
+        regions.put("BUSAN","부산");
+        regions.put("JEJU","제주");
+        return regions;
+    } // 상품 등록, 수정, 상세 페이지에 다 공통으로 들어가기 때문에 @ModelAttribute를 사용하면 코드를 줄일 수 있다. (성능상 static으로 써서 꺼내 쓰는게 훨씬 좋음 나중에 고려해봐야지)
+
 
     @GetMapping
     public String items(Model model) {
@@ -45,6 +57,7 @@ public class BasicItemController {
     @PostMapping("/add")
     public String addItem(Item item, RedirectAttributes redirectAttributes) {
         log.info("item.open={}", item.getOpen());
+        log.info("item.regions={}", item.getRegions());
 
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
