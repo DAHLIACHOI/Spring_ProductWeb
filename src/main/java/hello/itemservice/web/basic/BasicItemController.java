@@ -1,7 +1,9 @@
 package hello.itemservice.web.basic;
 
+import hello.itemservice.domain.item.DeliveryCode;
 import hello.itemservice.domain.item.Item;
 import hello.itemservice.domain.item.ItemRepository;
+import hello.itemservice.domain.item.ItemType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +35,20 @@ public class BasicItemController {
         return regions;
     } // 상품 등록, 수정, 상세 페이지에 다 공통으로 들어가기 때문에 @ModelAttribute를 사용하면 코드를 줄일 수 있다. (성능상 static으로 써서 꺼내 쓰는게 훨씬 좋음 나중에 고려해봐야지)
 
+    @ModelAttribute("itemTypes")
+    public ItemType[] itemTypes() {
+        ItemType[] values = ItemType.values();
+        return values;
+    }
+
+    @ModelAttribute("deliveryCodes")
+    public List<DeliveryCode> deliveryCodes() {
+        List<DeliveryCode> deliveryCodes = new ArrayList<>();
+        deliveryCodes.add(new DeliveryCode("FAST", "빠른 배송"));
+        deliveryCodes.add(new DeliveryCode("NORMAL", "일반 배송"));
+        deliveryCodes.add(new DeliveryCode("SLOW", "느린 배송"));
+        return deliveryCodes;
+    }
 
     @GetMapping
     public String items(Model model) {
@@ -58,6 +75,7 @@ public class BasicItemController {
     public String addItem(Item item, RedirectAttributes redirectAttributes) {
         log.info("item.open={}", item.getOpen());
         log.info("item.regions={}", item.getRegions());
+        log.info("item.itemType={}", item.getItemType());
 
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
